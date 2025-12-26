@@ -7,6 +7,12 @@
   </head>
   <body>
     <h1>Host Details Received</h1>
-    <p></p>
+    <ul>
+      <% details.forEach(detail => { %>
+      <li><%= detail %></li>
+      <% }) %>
+    </ul>
+    <a href="/">Go back to Home Page</a>
+    <a href="/host">Go to Host Page</a>
   </body>
 </html>

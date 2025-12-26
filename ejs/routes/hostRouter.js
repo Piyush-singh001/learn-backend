@@ -11,7 +11,7 @@ const hostDetail = [];
 HostRouter.post("/host/detail-submit", (req, res) => {
   hostDetail.push(req.body.detail);
   console.log("Host Detail Received:", hostDetail);
-  res.send("Host detail received successfully!");
+  res.render("showDetails", { details: hostDetail });
 });
 
 module.exports = HostRouter;
