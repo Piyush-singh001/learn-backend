@@ -91,7 +91,6 @@ app.post("/login", async (req, res) => {
       { expiresIn: "1h" }
     );
 
-
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -110,6 +109,27 @@ app.get("/logout", (req, res) => {
   res.clearCookie("token");
   res.redirect("/");
 });
+
+app.get("/dashboard", Auth, (req, res) => {
+  res.send(`Welcome user ${req.user.email}`);
+});
+/* ---------------- AUTH MIDDLEWARE ---------------- */
+
+const Auth = (req, res, next) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).send("Unauthorized");
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch (err) {
+    return res.status(401).send("Invalid token");
+  }
+};
 
 /* ---------------- SERVER ---------------- */
 app.listen(process.env.PORT || 3000, () => {
